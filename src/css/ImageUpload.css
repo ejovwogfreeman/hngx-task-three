@@ -1,0 +1,47 @@
+.imageupload-container {
+  padding: 100px 5%;
+  text-align: center;
+}
+
+.drop-zone {
+  border: 2px dashed #aaa;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.file-input {
+  display: none;
+}
+
+button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.imageupload-container img {
+  margin: auto;
+  width: 200px;
+}
+
+@media screen and (max-width: 500px) {
+  .imageupload-container img {
+    margin: auto;
+    width: 100%;
+  }
+}
