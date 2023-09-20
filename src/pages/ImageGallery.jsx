@@ -59,7 +59,7 @@ function ImageGallery() {
                   ref={provided.innerRef}
                   className="image-gallery"
                 >
-                  {[...imageUrls].reverse().map((image, index) => (
+                  {imageUrls.map((image, index) => (
                     <Draggable key={image} draggableId={image} index={index}>
                       {(provided, snapshot) => (
                         <div
