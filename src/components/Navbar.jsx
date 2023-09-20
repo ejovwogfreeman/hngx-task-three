@@ -30,6 +30,10 @@ const Navbar = ({ showSide, handleShowSide }) => {
             <Link to="/">
               <h1>PictureGram</h1>
             </Link>
+            {/* <form className="search-form">
+              <input type="text" placeholder="Search Tags" />
+              <button>search</button>
+            </form> */}
             <span className="links">
               <>
                 {" "}

@@ -1,5 +1,5 @@
 .imagegallery-container {
-  padding: 100px 5%;
+  padding: 30px 5%;
 }
 
 .image-gallery {
@@ -13,11 +13,58 @@
 .image-gallery div {
   width: 100%;
   height: 250px;
+  padding: 0px 0px 40px;
+  border: 1px solid #007bff;
+  position: relative;
+}
+
+.image-gallery div .tags {
+  position: absolute;
+  bottom: -8px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+.image-gallery div .tags span {
+  border: 1px solid #007bff;
+  padding: 0px 5px 4px;
+  color: #007bff;
+  margin-right: 10px;
+  border-radius: 10px;
 }
 
 .image-gallery img {
   width: 100%;
   height: 100%;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 110px;
+}
+.search-form div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.search-form input {
+  padding: 3px;
+  outline: none;
+  border: none;
+}
+
+.no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 @media screen and (max-width: 1200px) {

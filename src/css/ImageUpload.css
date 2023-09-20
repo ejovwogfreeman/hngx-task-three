@@ -4,15 +4,15 @@
 }
 
 .drop-zone {
-  border: 2px dashed #aaa;
+  border: 2px dashed rgba(0, 123, 255, 0.3);
   border-radius: 5px;
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  height: 300px;
-  margin-bottom: 20px;
+  height: 250px;
+  margin-bottom: 10px;
 }
 
 .file-input {
@@ -37,6 +37,16 @@ button:hover {
 .imageupload-container img {
   margin: auto;
   width: 200px;
+}
+
+.tags {
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  outline: none;
+  width: 500px;
+  margin: auto;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 500px) {

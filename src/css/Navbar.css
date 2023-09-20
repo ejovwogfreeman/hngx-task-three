@@ -8,6 +8,7 @@ nav {
   width: 100%;
   background-color: rgba(256, 256, 256, 0.8);
   border-bottom: 1px solid rgba(0, 123, 255, 0.3);
+  z-index: 1000;
 }
 
 nav .links {
