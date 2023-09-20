@@ -15,7 +15,6 @@ function ImageGallery() {
         const urlPromises = response.items.map((item) =>
           getDownloadURL(item).then((url) => url)
         );
-
         return Promise.all(urlPromises);
       })
       .then((urls) => {

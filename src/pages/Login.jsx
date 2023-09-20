@@ -7,35 +7,36 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        sessionStorage.setItem("user", JSON.stringify(user));
-        toast.success("LOGIN SUCCESSFUL");
-        navigate("/");
-      })
-      .catch((error) => {
-        toast.error("INVALID CREDRENTIALS");
-        setEmail("");
-        setPassword("");
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      sessionStorage.setItem("user", JSON.stringify(user));
+      toast.success("LOGIN SUCCESSFUL");
+      navigate("/");
+    } catch (error) {
+      toast.error("INVALID CREDENTIALS");
+      setEmail("");
+      setPassword("");
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubit}>
+      <form onSubmit={handleSubmit}>
         <h2>PictureGram</h2>
-        <label htmlFor="">UserNamene(Email)</label>
+        <label htmlFor="">Username (Email)</label>
         <input
           type="text"
           placeholder="Enter Your Email"
@@ -50,7 +51,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="button">
-          <button>Login</button>
+          <button disabled={isLoading} type="submit">
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
         </div>
       </form>
     </div>
