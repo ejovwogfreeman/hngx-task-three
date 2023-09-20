@@ -22,7 +22,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
-      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("galleryUser", JSON.stringify(user));
       toast.success("LOGIN SUCCESSFUL");
       navigate("/");
     } catch (error) {
