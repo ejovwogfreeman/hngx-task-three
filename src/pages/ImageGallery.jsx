@@ -18,7 +18,7 @@ function ImageGallery() {
         return Promise.all(urlPromises);
       })
       .then((urls) => {
-        setImageUrls(urls.reverse());
+        setImageUrls(urls.reverse()); // Reverse the order to have the latest image at the top left
       });
   }, []);
 
@@ -33,6 +33,15 @@ function ImageGallery() {
 
     setImageUrls(updatedImages);
   };
+
+  // Ensure that you are using the appropriate onTouch* event handlers for mobile devices
+  const draggableProps = (provided, snapshot) => ({
+    ...provided.draggableProps,
+    ...provided.dragHandleProps,
+    onTouchStart: provided.dragHandleProps.onMouseDown,
+    onTouchMove: provided.dragHandleProps.onMouseMove,
+    onTouchEnd: provided.dragHandleProps.onMouseUp,
+  });
 
   return (
     <>
@@ -52,11 +61,10 @@ function ImageGallery() {
                 >
                   {imageUrls.map((image, index) => (
                     <Draggable key={image} draggableId={image} index={index}>
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          {...draggableProps(provided, snapshot)}
                           className="image-container"
                         >
                           <img src={image} alt="Gallery" />
