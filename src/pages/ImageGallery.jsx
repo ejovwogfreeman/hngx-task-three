@@ -18,7 +18,7 @@ function ImageGallery() {
         return Promise.all(urlPromises);
       })
       .then((urls) => {
-        setImageUrls(urls.reverse()); // Reverse the order to have the latest image at the top left
+        setImageUrls(urls);
       });
   }, []);
 
@@ -59,7 +59,7 @@ function ImageGallery() {
                   ref={provided.innerRef}
                   className="image-gallery"
                 >
-                  {imageUrls.map((image, index) => (
+                  {[...imageUrls].reverse().map((image, index) => (
                     <Draggable key={image} draggableId={image} index={index}>
                       {(provided, snapshot) => (
                         <div
