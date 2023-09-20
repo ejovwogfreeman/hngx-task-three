@@ -15,7 +15,10 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     const auth = getAuth();
-
+    if (!email || !password) {
+      toast.error("PLEASE FILL ALL FIELDS");
+      return setIsLoading(false);
+    }
     try {
       await signInWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
