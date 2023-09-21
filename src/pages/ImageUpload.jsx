@@ -137,6 +137,11 @@ function ImageUpload() {
       },
     };
 
+    if (!tags) {
+      toast.error("PLEASE ADD TAGS");
+      return setUploading(false);
+    }
+
     uploadBytes(imageRef, imageUpload)
       .then(() => {
         return updateMetadata(imageRef, metadata);
