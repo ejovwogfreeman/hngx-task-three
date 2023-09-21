@@ -54,4 +54,7 @@ button:hover {
     margin: auto;
     width: 100%;
   }
+  .tags {
+    width: 100%;
+  }
 }
