@@ -104,7 +104,7 @@ function ImageGallery() {
                   ref={provided.innerRef}
                   className="image-gallery"
                 >
-                  {[...filteredImages].reverse().map((imageData, index) => (
+                  {filteredImages.map((imageData, index) => (
                     <Draggable
                       key={imageData.image}
                       draggableId={String(imageData.image)}
