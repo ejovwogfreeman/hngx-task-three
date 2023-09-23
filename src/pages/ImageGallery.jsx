@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ref, getDownloadURL, listAll } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { collection, getDocs } from "firebase/firestore";
 import { storage, db } from "../firebase/firebase";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -9,49 +9,29 @@ import Loader from "../components/Loader";
 
 function ImageGallery() {
   const [imagesData, setImagesData] = useState([]);
-  const imagesListRef = ref(storage, "images/");
-  const [arrayOfObjects, setArrayOfObjects] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const imagesListRef = ref(storage, "");
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch image URLs
-        const imageUrls = await listAll(imagesListRef);
-        const urlsPromises = imageUrls.items.map((item) =>
-          getDownloadURL(item).then((url) => url)
-        );
-
-        // Fetch tags from Firestore
         const tagsCollection = collection(db, "tags");
         const tagsSnapshot = await getDocs(tagsCollection);
+        const tagsData = [];
 
-        const tagsData = {};
-        let tags = [];
         tagsSnapshot.forEach((doc) => {
-          tagsData[doc.id] = doc.data().tag;
-          tags.push(tagsData[doc.id]);
+          tagsData.push(doc.data());
         });
 
-        // Wait for both image URLs and tags to resolve
-        const [resolvedUrls, resolvedTags] = await Promise.all([
-          Promise.all(urlsPromises),
-          tagsData,
-        ]);
+        const imageUrls = await Promise.all(
+          tagsData.map(async (tagData) => {
+            const imageUrlRef = ref(imagesListRef, tagData.imageId);
+            const imageUrl = await getDownloadURL(imageUrlRef);
+            return { ...tagData, imageUrl };
+          })
+        );
 
-        // Combine image URLs with tags
-        const imageData = imageUrls.items.map((item, index) => ({
-          image: resolvedUrls[index],
-          tag: resolvedTags[item.name], // Use the image's name as the key
-        }));
-
-        let arrayOfObjects = tags.map((key, index) => ({
-          tag: key,
-          image: resolvedUrls[index],
-        }));
-
-        setArrayOfObjects(arrayOfObjects);
-        setImagesData(imageData);
+        setImagesData(imageUrls);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -65,15 +45,14 @@ function ImageGallery() {
       return;
     }
 
-    const updatedImages = [...filteredImages]; // Use filteredImages instead of imagesData
+    const updatedImages = [...imagesData];
     const [draggedImage] = updatedImages.splice(result.source.index, 1);
     updatedImages.splice(result.destination.index, 0, draggedImage);
 
-    setArrayOfObjects(updatedImages);
+    setImagesData(updatedImages);
   };
 
-  // Filter function to match images based on tag
-  const filteredImages = arrayOfObjects.filter((imageData) =>
+  const filteredImages = imagesData.filter((imageData) =>
     imageData.tag.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -106,8 +85,8 @@ function ImageGallery() {
                 >
                   {filteredImages.map((imageData, index) => (
                     <Draggable
-                      key={imageData.image}
-                      draggableId={String(imageData.image)}
+                      key={imageData.imageId}
+                      draggableId={imageData.imageId}
                       index={index}
                     >
                       {(provided, snapshot) => (
@@ -117,7 +96,7 @@ function ImageGallery() {
                           {...provided.dragHandleProps}
                           className="image-container"
                         >
-                          <img src={imageData.image} alt="Gallery" />
+                          <img src={imageData.imageUrl} alt="Gallery" />
                           <span className="tags">
                             {imageData.tag.split(", ").map((x, index) => (
                               <span key={index}>{x}</span>
